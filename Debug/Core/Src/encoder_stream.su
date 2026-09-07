@@ -1,0 +1,7 @@
+../Core/Src/encoder_stream.c:45:13:EncStream_Sample	24	static
+../Core/Src/encoder_stream.c:66:16:EncStream_Xor	24	static
+../Core/Src/encoder_stream.c:106:17:EncStream_PutU32	40	static
+../Core/Src/encoder_stream.c:124:17:EncStream_PutI32	24	static
+../Core/Src/encoder_stream.c:142:17:EncStream_BuildFrame	32	static
+../Core/Src/encoder_stream.c:173:6:EncStream_Init	16	static
+../Core/Src/encoder_stream.c:192:6:EncStream_Task	24	static
