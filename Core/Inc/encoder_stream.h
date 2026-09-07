@@ -13,7 +13,9 @@ extern "C" {
 
 #include "main.h"
 
-/* Number of encoders: TIM1, TIM2, TIM3, TIM4, TIM8, TIM20 (frame order). */
+/* Number of encoders. Frame order is motor order ENC1..ENC6, which maps to
+   the timers as: ENC1=TIM3, ENC2=TIM4, ENC3=TIM20, ENC4=TIM1, ENC5=TIM2,
+   ENC6=TIM8. Index 0 of every array below is ENC1. */
 #define ENC_COUNT               6u
 
 /* Frame period in milliseconds. 2 ms -> 500 Hz.
@@ -25,7 +27,7 @@ extern "C" {
 /* 0 = ASCII, NMEA style:  <seq,e0,e1,e2,e3,e4,e5*XX\r\n
        '<'    frame start, the only place this byte may appear
        seq    frame counter, 0..255 rolling
-       eN     wrap corrected position, signed decimal
+       eN     wrap corrected position of ENC(N+1), signed decimal
        *XX    XOR of every byte between '<' and '*', two upper case hex digits
    1 = binary, fixed 28 bytes:
        0xAA 0x55 | seq u8 | 6 x int32 LE | XOR of the 25 bytes after the sync */
@@ -33,7 +35,7 @@ extern "C" {
 
 /* Live state, deliberately global so STM32CubeIDE Live Expressions can watch
    them from any context: type "EncPos", "EncSeq" or "EncDrops" in the view. */
-extern volatile int32_t  EncPos[ENC_COUNT];  /* wrap corrected positions      */
+extern volatile int32_t  EncPos[ENC_COUNT];  /* EncPos[0] is ENC1, [5] is ENC6*/
 extern volatile uint8_t  EncSeq;             /* sequence of the next frame    */
 extern volatile uint32_t EncDrops;           /* frames skipped, should stay 0 */
 

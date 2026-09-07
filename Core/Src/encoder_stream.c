@@ -25,13 +25,24 @@ volatile int32_t  EncPos[ENC_COUNT];
 volatile uint8_t  EncSeq;
 volatile uint32_t EncDrops;
 
-/* Encoder timers, in the order they appear in every transmitted frame. */
-static TIM_HandleTypeDef *const enc_tim[ENC_COUNT] = {
-  &htim1, &htim2, &htim3, &htim4, &htim8, &htim20
-};
+/* Frame layout, in motor order ENC1..ENC6, following how the encoders are
+   physically wired. The timer and its counter width are stored together so
+   the two can never drift apart if this order is changed again.
+   TIM2 is the only 32 bit counter of the six; the others wrap at 16 bits. */
+typedef struct
+{
+  TIM_HandleTypeDef *tim;
+  uint8_t            is_32bit;
+} EncChannel;
 
-/* TIM2 is the only 32 bit counter of the six; the others wrap at 16 bits. */
-static const uint8_t enc_is_32bit[ENC_COUNT] = { 0u, 1u, 0u, 0u, 0u, 0u };
+static const EncChannel enc_ch[ENC_COUNT] = {
+  { &htim3,  0u },   /* ENC1 */
+  { &htim4,  0u },   /* ENC2 */
+  { &htim20, 0u },   /* ENC3 */
+  { &htim1,  0u },   /* ENC4 */
+  { &htim2,  1u },   /* ENC5 */
+  { &htim8,  0u },   /* ENC6 */
+};
 
 static uint32_t enc_prev[ENC_COUNT];
 static uint32_t enc_next_tick;
@@ -46,10 +57,10 @@ static void EncStream_Sample(void)
 {
   for (uint32_t i = 0u; i < ENC_COUNT; i++)
   {
-    uint32_t now = __HAL_TIM_GET_COUNTER(enc_tim[i]);
+    uint32_t now = __HAL_TIM_GET_COUNTER(enc_ch[i].tim);
     int32_t  delta;
 
-    if (enc_is_32bit[i] != 0u)
+    if (enc_ch[i].is_32bit != 0u)
     {
       delta = (int32_t)(now - enc_prev[i]);
     }
@@ -174,11 +185,11 @@ void EncStream_Init(void)
 {
   for (uint32_t i = 0u; i < ENC_COUNT; i++)
   {
-    if (HAL_TIM_Encoder_Start(enc_tim[i], TIM_CHANNEL_ALL) != HAL_OK)
+    if (HAL_TIM_Encoder_Start(enc_ch[i].tim, TIM_CHANNEL_ALL) != HAL_OK)
     {
       Error_Handler();
     }
-    __HAL_TIM_SET_COUNTER(enc_tim[i], 0u);
+    __HAL_TIM_SET_COUNTER(enc_ch[i].tim, 0u);
     enc_prev[i] = 0u;
     EncPos[i]   = 0;
   }

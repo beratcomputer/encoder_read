@@ -8,7 +8,7 @@ Frame format (ENC_STREAM_BINARY = 0), one per line:
 
     '<'    frame start, appears nowhere else, so it is a resync anchor
     seq    frame counter, 0..255 rolling
-    eN     wrap corrected position of encoder N, signed decimal
+    eN     wrap corrected position of ENC(N+1): e0 is ENC1, e5 is ENC6
     *XX    XOR of every byte between '<' and '*', two hex digits
 
 Usage:
@@ -30,7 +30,10 @@ import time
 
 BAUD = 921600
 ENC_COUNT = 6
-TIMER_NAMES = ["TIM1", "TIM2", "TIM3", "TIM4", "TIM8", "TIM20"]
+# Frame order is motor order ENC1..ENC6; the timer behind each is shown
+# alongside because it is what you look up in the firmware when debugging.
+ENC_NAMES = ["ENC1", "ENC2", "ENC3", "ENC4", "ENC5", "ENC6"]
+ENC_TIMERS = ["TIM3", "TIM4", "TIM20", "TIM1", "TIM2", "TIM8"]
 
 
 class Frame:
@@ -212,11 +215,12 @@ class Display:
                 % (parser.frames, "-", parser.lost, parser.bad_crc, parser.bad_fmt)
             )
         rows.append("")
-        rows.append("  %-3s%-8s%14s%14s" % ("#", "timer", "position", "counts/s"))
-        rows.append("  " + "-" * 39)
+        rows.append("  %-7s%-8s%14s%14s" % ("enc", "timer", "position", "counts/s"))
+        rows.append("  " + "-" * 43)
         for i in range(ENC_COUNT):
             rate = ("%14.1f" % rates[i]) if self.live else "%14s" % "-"
-            rows.append("  %-3d%-8s%14d%s" % (i, TIMER_NAMES[i], frame.pos[i], rate))
+            rows.append("  %-7s%-8s%14d%s"
+                        % (ENC_NAMES[i], ENC_TIMERS[i], frame.pos[i], rate))
         rows.append("")
         rows.append("Ctrl-C to stop")
 

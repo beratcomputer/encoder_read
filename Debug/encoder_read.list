@@ -7,45 +7,45 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   1 .text         00004c30  080001d8  080001d8  000011d8  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       00000074  08004e08  08004e08  00005e08  2**2
+  2 .rodata       00000084  08004e08  08004e08  00005e08  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  08004e7c  08004e7c  0000600c  2**0
+  3 .ARM.extab    00000000  08004e8c  08004e8c  0000600c  2**0
                   CONTENTS, READONLY
-  4 .ARM          00000008  08004e7c  08004e7c  00005e7c  2**2
+  4 .ARM          00000008  08004e8c  08004e8c  00005e8c  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  5 .preinit_array 00000000  08004e84  08004e84  0000600c  2**0
+  5 .preinit_array 00000000  08004e94  08004e94  0000600c  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  08004e84  08004e84  00005e84  2**2
+  6 .init_array   00000004  08004e94  08004e94  00005e94  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  7 .fini_array   00000004  08004e88  08004e88  00005e88  2**2
+  7 .fini_array   00000004  08004e98  08004e98  00005e98  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  8 .data         0000000c  20000000  08004e8c  00006000  2**2
+  8 .data         0000000c  20000000  08004e9c  00006000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          000003dc  2000000c  08004e98  0000600c  2**2
+  9 .bss          000003dc  2000000c  08004ea8  0000600c  2**2
                   ALLOC
- 10 ._user_heap_stack 00000600  200003e8  08004e98  000063e8  2**0
+ 10 ._user_heap_stack 00000600  200003e8  08004ea8  000063e8  2**0
                   ALLOC
  11 .ARM.attributes 00000030  00000000  00000000  0000600c  2**0
                   CONTENTS, READONLY
- 12 .debug_info   0001389a  00000000  00000000  0000603c  2**0
+ 12 .debug_info   000138a3  00000000  00000000  0000603c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 000029a9  00000000  00000000  000198d6  2**0
+ 13 .debug_abbrev 000029ba  00000000  00000000  000198df  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 00001118  00000000  00000000  0001c280  2**3
+ 14 .debug_aranges 00001118  00000000  00000000  0001c2a0  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_rnglists 00000d54  00000000  00000000  0001d398  2**0
+ 15 .debug_rnglists 00000d54  00000000  00000000  0001d3b8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  0001ef58  00000000  00000000  0001e0ec  2**0
+ 16 .debug_macro  0001ef58  00000000  00000000  0001e10c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   000151a6  00000000  00000000  0003d044  2**0
+ 17 .debug_line   000151a6  00000000  00000000  0003d064  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000c9e0f  00000000  00000000  000521ea  2**0
+ 18 .debug_str    000c9e15  00000000  00000000  0005220a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  0011bff9  2**0
+ 19 .comment      00000043  00000000  00000000  0011c01f  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00004748  00000000  00000000  0011c03c  2**2
+ 20 .debug_frame  00004748  00000000  00000000  0011c064  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 00000070  00000000  00000000  00120784  2**0
+ 21 .debug_line_str 00000070  00000000  00000000  001207ac  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -436,80 +436,81 @@ static void EncStream_Sample(void)
   for (uint32_t i = 0u; i < ENC_COUNT; i++)
  800059e:	2300      	movs	r3, #0
  80005a0:	60fb      	str	r3, [r7, #12]
- 80005a2:	e031      	b.n	8000608 <EncStream_Sample+0x70>
+ 80005a2:	e032      	b.n	800060a <EncStream_Sample+0x72>
   {
-    uint32_t now = __HAL_TIM_GET_COUNTER(enc_tim[i]);
- 80005a4:	4a1d      	ldr	r2, [pc, #116]	@ (800061c <EncStream_Sample+0x84>)
+    uint32_t now = __HAL_TIM_GET_COUNTER(enc_ch[i].tim);
+ 80005a4:	4a1e      	ldr	r2, [pc, #120]	@ (8000620 <EncStream_Sample+0x88>)
  80005a6:	68fb      	ldr	r3, [r7, #12]
- 80005a8:	f852 3023 	ldr.w	r3, [r2, r3, lsl #2]
+ 80005a8:	f852 3033 	ldr.w	r3, [r2, r3, lsl #3]
  80005ac:	681b      	ldr	r3, [r3, #0]
  80005ae:	6a5b      	ldr	r3, [r3, #36]	@ 0x24
  80005b0:	607b      	str	r3, [r7, #4]
     int32_t  delta;
 
-    if (enc_is_32bit[i] != 0u)
+    if (enc_ch[i].is_32bit != 0u)
  80005b2:	4a1b      	ldr	r2, [pc, #108]	@ (8000620 <EncStream_Sample+0x88>)
  80005b4:	68fb      	ldr	r3, [r7, #12]
- 80005b6:	4413      	add	r3, r2
- 80005b8:	781b      	ldrb	r3, [r3, #0]
- 80005ba:	2b00      	cmp	r3, #0
- 80005bc:	d007      	beq.n	80005ce <EncStream_Sample+0x36>
+ 80005b6:	00db      	lsls	r3, r3, #3
+ 80005b8:	4413      	add	r3, r2
+ 80005ba:	791b      	ldrb	r3, [r3, #4]
+ 80005bc:	2b00      	cmp	r3, #0
+ 80005be:	d007      	beq.n	80005d0 <EncStream_Sample+0x38>
     {
       delta = (int32_t)(now - enc_prev[i]);
- 80005be:	4a19      	ldr	r2, [pc, #100]	@ (8000624 <EncStream_Sample+0x8c>)
- 80005c0:	68fb      	ldr	r3, [r7, #12]
- 80005c2:	f852 3023 	ldr.w	r3, [r2, r3, lsl #2]
- 80005c6:	687a      	ldr	r2, [r7, #4]
- 80005c8:	1ad3      	subs	r3, r2, r3
- 80005ca:	60bb      	str	r3, [r7, #8]
- 80005cc:	e00a      	b.n	80005e4 <EncStream_Sample+0x4c>
+ 80005c0:	4a18      	ldr	r2, [pc, #96]	@ (8000624 <EncStream_Sample+0x8c>)
+ 80005c2:	68fb      	ldr	r3, [r7, #12]
+ 80005c4:	f852 3023 	ldr.w	r3, [r2, r3, lsl #2]
+ 80005c8:	687a      	ldr	r2, [r7, #4]
+ 80005ca:	1ad3      	subs	r3, r2, r3
+ 80005cc:	60bb      	str	r3, [r7, #8]
+ 80005ce:	e00a      	b.n	80005e6 <EncStream_Sample+0x4e>
     }
     else
     {
       delta = (int16_t)((uint16_t)now - (uint16_t)enc_prev[i]);
- 80005ce:	687b      	ldr	r3, [r7, #4]
- 80005d0:	b29a      	uxth	r2, r3
- 80005d2:	4914      	ldr	r1, [pc, #80]	@ (8000624 <EncStream_Sample+0x8c>)
- 80005d4:	68fb      	ldr	r3, [r7, #12]
- 80005d6:	f851 3023 	ldr.w	r3, [r1, r3, lsl #2]
- 80005da:	b29b      	uxth	r3, r3
- 80005dc:	1ad3      	subs	r3, r2, r3
- 80005de:	b29b      	uxth	r3, r3
- 80005e0:	b21b      	sxth	r3, r3
- 80005e2:	60bb      	str	r3, [r7, #8]
+ 80005d0:	687b      	ldr	r3, [r7, #4]
+ 80005d2:	b29a      	uxth	r2, r3
+ 80005d4:	4913      	ldr	r1, [pc, #76]	@ (8000624 <EncStream_Sample+0x8c>)
+ 80005d6:	68fb      	ldr	r3, [r7, #12]
+ 80005d8:	f851 3023 	ldr.w	r3, [r1, r3, lsl #2]
+ 80005dc:	b29b      	uxth	r3, r3
+ 80005de:	1ad3      	subs	r3, r2, r3
+ 80005e0:	b29b      	uxth	r3, r3
+ 80005e2:	b21b      	sxth	r3, r3
+ 80005e4:	60bb      	str	r3, [r7, #8]
     }
 
     enc_prev[i] = now;
- 80005e4:	490f      	ldr	r1, [pc, #60]	@ (8000624 <EncStream_Sample+0x8c>)
- 80005e6:	68fb      	ldr	r3, [r7, #12]
- 80005e8:	687a      	ldr	r2, [r7, #4]
- 80005ea:	f841 2023 	str.w	r2, [r1, r3, lsl #2]
+ 80005e6:	490f      	ldr	r1, [pc, #60]	@ (8000624 <EncStream_Sample+0x8c>)
+ 80005e8:	68fb      	ldr	r3, [r7, #12]
+ 80005ea:	687a      	ldr	r2, [r7, #4]
+ 80005ec:	f841 2023 	str.w	r2, [r1, r3, lsl #2]
     EncPos[i]  += delta;
- 80005ee:	4a0e      	ldr	r2, [pc, #56]	@ (8000628 <EncStream_Sample+0x90>)
- 80005f0:	68fb      	ldr	r3, [r7, #12]
- 80005f2:	f852 2023 	ldr.w	r2, [r2, r3, lsl #2]
- 80005f6:	68bb      	ldr	r3, [r7, #8]
- 80005f8:	441a      	add	r2, r3
- 80005fa:	490b      	ldr	r1, [pc, #44]	@ (8000628 <EncStream_Sample+0x90>)
- 80005fc:	68fb      	ldr	r3, [r7, #12]
- 80005fe:	f841 2023 	str.w	r2, [r1, r3, lsl #2]
+ 80005f0:	4a0d      	ldr	r2, [pc, #52]	@ (8000628 <EncStream_Sample+0x90>)
+ 80005f2:	68fb      	ldr	r3, [r7, #12]
+ 80005f4:	f852 2023 	ldr.w	r2, [r2, r3, lsl #2]
+ 80005f8:	68bb      	ldr	r3, [r7, #8]
+ 80005fa:	441a      	add	r2, r3
+ 80005fc:	490a      	ldr	r1, [pc, #40]	@ (8000628 <EncStream_Sample+0x90>)
+ 80005fe:	68fb      	ldr	r3, [r7, #12]
+ 8000600:	f841 2023 	str.w	r2, [r1, r3, lsl #2]
   for (uint32_t i = 0u; i < ENC_COUNT; i++)
- 8000602:	68fb      	ldr	r3, [r7, #12]
- 8000604:	3301      	adds	r3, #1
- 8000606:	60fb      	str	r3, [r7, #12]
- 8000608:	68fb      	ldr	r3, [r7, #12]
- 800060a:	2b05      	cmp	r3, #5
- 800060c:	d9ca      	bls.n	80005a4 <EncStream_Sample+0xc>
+ 8000604:	68fb      	ldr	r3, [r7, #12]
+ 8000606:	3301      	adds	r3, #1
+ 8000608:	60fb      	str	r3, [r7, #12]
+ 800060a:	68fb      	ldr	r3, [r7, #12]
+ 800060c:	2b05      	cmp	r3, #5
+ 800060e:	d9c9      	bls.n	80005a4 <EncStream_Sample+0xc>
   }
 }
- 800060e:	bf00      	nop
  8000610:	bf00      	nop
- 8000612:	3714      	adds	r7, #20
- 8000614:	46bd      	mov	sp, r7
- 8000616:	f85d 7b04 	ldr.w	r7, [sp], #4
- 800061a:	4770      	bx	lr
- 800061c:	08004e08 	.word	0x08004e08
- 8000620:	08004e20 	.word	0x08004e20
+ 8000612:	bf00      	nop
+ 8000614:	3714      	adds	r7, #20
+ 8000616:	46bd      	mov	sp, r7
+ 8000618:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 800061c:	4770      	bx	lr
+ 800061e:	bf00      	nop
+ 8000620:	08004e08 	.word	0x08004e08
  8000624:	20000048 	.word	0x20000048
  8000628:	20000028 	.word	0x20000028
 
@@ -848,7 +849,7 @@ static uint32_t EncStream_BuildFrame(uint8_t *dst)
  8000832:	bf00      	nop
  8000834:	20000040 	.word	0x20000040
  8000838:	20000028 	.word	0x20000028
- 800083c:	08004e28 	.word	0x08004e28
+ 800083c:	08004e38 	.word	0x08004e38
 
 08000840 <EncStream_Init>:
 #endif /* ENC_STREAM_BINARY */
@@ -865,10 +866,10 @@ void EncStream_Init(void)
  8000848:	607b      	str	r3, [r7, #4]
  800084a:	e020      	b.n	800088e <EncStream_Init+0x4e>
   {
-    if (HAL_TIM_Encoder_Start(enc_tim[i], TIM_CHANNEL_ALL) != HAL_OK)
+    if (HAL_TIM_Encoder_Start(enc_ch[i].tim, TIM_CHANNEL_ALL) != HAL_OK)
  800084c:	4a1b      	ldr	r2, [pc, #108]	@ (80008bc <EncStream_Init+0x7c>)
  800084e:	687b      	ldr	r3, [r7, #4]
- 8000850:	f852 3023 	ldr.w	r3, [r2, r3, lsl #2]
+ 8000850:	f852 3033 	ldr.w	r3, [r2, r3, lsl #3]
  8000854:	213c      	movs	r1, #60	@ 0x3c
  8000856:	4618      	mov	r0, r3
  8000858:	f002 fd32 	bl	80032c0 <HAL_TIM_Encoder_Start>
@@ -879,10 +880,10 @@ void EncStream_Init(void)
       Error_Handler();
  8000862:	f000 f938 	bl	8000ad6 <Error_Handler>
     }
-    __HAL_TIM_SET_COUNTER(enc_tim[i], 0u);
+    __HAL_TIM_SET_COUNTER(enc_ch[i].tim, 0u);
  8000866:	4a15      	ldr	r2, [pc, #84]	@ (80008bc <EncStream_Init+0x7c>)
  8000868:	687b      	ldr	r3, [r7, #4]
- 800086a:	f852 3023 	ldr.w	r3, [r2, r3, lsl #2]
+ 800086a:	f852 3033 	ldr.w	r3, [r2, r3, lsl #3]
  800086e:	681b      	ldr	r3, [r3, #0]
  8000870:	2200      	movs	r2, #0
  8000872:	625a      	str	r2, [r3, #36]	@ 0x24
@@ -3125,7 +3126,7 @@ LoopForever:
   ldr r1, =_edata
  8001484:	2000000c 	.word	0x2000000c
   ldr r2, =_sidata
- 8001488:	08004e8c 	.word	0x08004e8c
+ 8001488:	08004e9c 	.word	0x08004e9c
   ldr r2, =_sbss
  800148c:	2000000c 	.word	0x2000000c
   ldr r4, =_ebss
@@ -7157,7 +7158,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(const RCC_ClkInitTypeDef  *RCC_ClkInitStru
  8002b24:	40022000 	.word	0x40022000
  8002b28:	40021000 	.word	0x40021000
  8002b2c:	04c4b400 	.word	0x04c4b400
- 8002b30:	08004e3c 	.word	0x08004e3c
+ 8002b30:	08004e4c 	.word	0x08004e4c
  8002b34:	20000000 	.word	0x20000000
  8002b38:	20000004 	.word	0x20000004
 
@@ -7338,7 +7339,7 @@ uint32_t HAL_RCC_GetPCLK1Freq(void)
  8002c38:	4618      	mov	r0, r3
  8002c3a:	bd80      	pop	{r7, pc}
  8002c3c:	40021000 	.word	0x40021000
- 8002c40:	08004e4c 	.word	0x08004e4c
+ 8002c40:	08004e5c 	.word	0x08004e5c
 
 08002c44 <HAL_RCC_GetPCLK2Freq>:
   * @note   Each time PCLK2 changes, this function must be called to update the
@@ -7365,7 +7366,7 @@ uint32_t HAL_RCC_GetPCLK2Freq(void)
  8002c64:	4618      	mov	r0, r3
  8002c66:	bd80      	pop	{r7, pc}
  8002c68:	40021000 	.word	0x40021000
- 8002c6c:	08004e4c 	.word	0x08004e4c
+ 8002c6c:	08004e5c 	.word	0x08004e5c
 
 08002c70 <RCC_GetSysClockFreqFromPLLSource>:
 /**
@@ -11271,7 +11272,7 @@ HAL_StatusTypeDef UART_SetConfig(UART_HandleTypeDef *huart)
  80044be:	bf00      	nop
  80044c0:	40008000 	.word	0x40008000
  80044c4:	00f42400 	.word	0x00f42400
- 80044c8:	08004e54 	.word	0x08004e54
+ 80044c8:	08004e64 	.word	0x08004e64
       }
       else
       {
@@ -12863,8 +12864,8 @@ static void UARTEx_SetNbDataToProcess(UART_HandleTypeDef *huart)
  8004d88:	f85d 7b04 	ldr.w	r7, [sp], #4
  8004d8c:	4770      	bx	lr
  8004d8e:	bf00      	nop
- 8004d90:	08004e6c 	.word	0x08004e6c
- 8004d94:	08004e74 	.word	0x08004e74
+ 8004d90:	08004e7c 	.word	0x08004e7c
+ 8004d94:	08004e84 	.word	0x08004e84
 
 08004d98 <memset>:
  8004d98:	4402      	add	r2, r0
@@ -12901,10 +12902,10 @@ static void UARTEx_SetNbDataToProcess(UART_HandleTypeDef *huart)
  8004dda:	4798      	blx	r3
  8004ddc:	3601      	adds	r6, #1
  8004dde:	e7f2      	b.n	8004dc6 <__libc_init_array+0x1e>
- 8004de0:	08004e84 	.word	0x08004e84
- 8004de4:	08004e84 	.word	0x08004e84
- 8004de8:	08004e84 	.word	0x08004e84
- 8004dec:	08004e88 	.word	0x08004e88
+ 8004de0:	08004e94 	.word	0x08004e94
+ 8004de4:	08004e94 	.word	0x08004e94
+ 8004de8:	08004e94 	.word	0x08004e94
+ 8004dec:	08004e98 	.word	0x08004e98
 
 08004df0 <_init>:
  8004df0:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
